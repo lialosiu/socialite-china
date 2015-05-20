@@ -48,6 +48,6 @@ Same with the [laravel/socialite](http://laravel.com/docs/5.0/authentication#soc
 
 [laravel/socialite](https://github.com/laravel/socialite)
 
-### License
+## License
 
 [MIT license](http://opensource.org/licenses/MIT)
