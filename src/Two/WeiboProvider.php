@@ -42,11 +42,11 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 'body' => $this->getTokenFields($code),
             ]);
         } catch (RequestException $e) {
-            $data      = json_decode($e->getResponse()->getBody(), true);
-            $error     = array_get($data, 'error');
-            $errorCode = array_get($data, 'error_code');
-            throw new WeiboOAuthException($error, $errorCode);
+            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            throw $e;
         }
+
+        $this->checkError(json_decode($response->getBody(), true));
 
         return $this->parseAccessToken($response->getBody());
     }
@@ -66,13 +66,13 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $data      = json_decode($e->getResponse()->getBody(), true);
-            $error     = array_get($data, 'error');
-            $errorCode = array_get($data, 'error_code');
-            throw new WeiboOAuthException($error, $errorCode);
+            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            throw $e;
         }
 
-        return json_decode($response->getBody(), true);
+        $data = $this->checkError(json_decode($response->getBody(), true));
+
+        return $data;
     }
 
     /**
@@ -100,7 +100,7 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
         ];
     }
 
-    protected function getUid($token)
+    private function getUid($token)
     {
         try {
             $response = $this->getHttpClient()->post('https://api.weibo.com/oauth2/get_token_info', [
@@ -109,14 +109,23 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $data      = json_decode($e->getResponse()->getBody(), true);
+            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            throw $e;
+        }
+
+        $data = $this->checkError(json_decode($response->getBody(), true));
+
+        return array_get($data, 'uid');
+    }
+
+    private function checkError($data)
+    {
+        if (!is_array($data) || isset($data['error_code'])) {
             $error     = array_get($data, 'error');
             $errorCode = array_get($data, 'error_code');
             throw new WeiboOAuthException($error, $errorCode);
         }
 
-        $data = json_decode($response->getBody(), true);
-
-        return array_get($data, 'uid');
+        return $data;
     }
 }

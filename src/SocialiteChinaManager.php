@@ -22,6 +22,20 @@ class SocialiteChinaManager extends Manager implements Contracts\Factory
      *
      * @return \Laravel\Socialite\One\AbstractProvider
      */
+    protected function createQqDriver()
+    {
+        $config = $this->app['config']['services.qq'];
+
+        return $this->buildProvider(
+            'Lialosiu\SocialiteChina\Two\QqProvider', $config
+        );
+    }
+
+    /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Laravel\Socialite\One\AbstractProvider
+     */
     protected function createWeiboDriver()
     {
         $config = $this->app['config']['services.weibo'];
