@@ -1,0 +1,25 @@
+{
+  "name": "lialosiu/socialite-china",
+  "description": "Laravel wrapper around OAuth 1 & OAuth 2 libraries for china.",
+  "keywords": [
+    "oauth",
+    "laravel"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Lialosiu",
+      "email": "lialosiu@gmail.com"
+    }
+  ],
+  "require": {
+    "laravel/socialite": "~2.0"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Lialosiu\\SocialiteChina\\": "src/"
+    }
+  }
+}
