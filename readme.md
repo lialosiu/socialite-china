@@ -11,7 +11,7 @@ Laravel Socialite OAuth authentication for China.
 composer require "lialosiu/socialite-china:~1.0"
 ```
 
-Add provider ```'Lialosiu\SocialiteChina\SocialiteChinaServiceProvider'``` in your ```config/app.php```
+Add provider ```Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class``` in your ```config/app.php```
 
 Add config in ```config/services.php``` :
 
