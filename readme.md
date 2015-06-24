@@ -8,7 +8,7 @@ Laravel Socialite OAuth authentication for China.
 ## Usage
 
 ```
-composer require "lialosiu/socialite-china:~1.0"
+composer require "lialosiu/socialite-china:~1.1"
 ```
 
 Add provider ```Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class``` in your ```config/app.php```
@@ -45,7 +45,9 @@ QQ_CALLBACK_URL=YourQqCallBackUrl
 
 ## Documentation
 
-Same with the [laravel/socialite](http://laravel.com/docs/5.0/authentication#social-authentication)
+You can pass the token manually like ```SocializeChina::with('weibo')->user('2.00xxxxxxxxxxxxxxxxxxxxxxxxxxxx')```
+
+Other same with the [laravel/socialite](http://laravel.com/docs/5.0/authentication#social-authentication)
 
 ## Require
 

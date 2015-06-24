@@ -1,6 +1,6 @@
-<?php namespace Lialosiu\SocialiteChina\Contracts;
+<?php namespace Lialosiu\SocialiteChina\Two;
 
-interface Provider
+interface ProviderInterface
 {
 
     /**
@@ -14,7 +14,7 @@ interface Provider
      * Get the User instance for the authenticated user.
      *
      * @param string $token
-     * @return \Lialosiu\SocialiteChina\Contracts\User
+     * @return \Laravel\Socialite\Two\User
      */
     public function user($token = null);
 }

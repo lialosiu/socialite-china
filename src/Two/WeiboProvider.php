@@ -2,10 +2,9 @@
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
-use Laravel\Socialite\Two\AbstractProvider;
-use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
 use Lialosiu\SocialiteChina\Exception\WeiboOAuthException;
+use Mockery\CountValidator\Exception;
 
 class WeiboProvider extends AbstractProvider implements ProviderInterface
 {
@@ -45,11 +44,12 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 $postKey => $this->getTokenFields($code),
             ]);
         } catch (RequestException $e) {
-            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $this->checkError(json_decode($response->getBody(), true));
+        $this->decode($response->getBody());
 
         return $this->parseAccessToken($response->getBody());
     }
@@ -69,11 +69,12 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $data = $this->checkError(json_decode($response->getBody(), true));
+        $data = $this->decode($response->getBody());
 
         return $data;
     }
@@ -114,17 +115,23 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $this->checkError(json_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $data = $this->checkError(json_decode($response->getBody(), true));
+        $data = $this->decode($response->getBody());
 
         return array_get($data, 'uid');
     }
 
-    private function checkError($data)
+    private function decode($data)
     {
+        try {
+            $data = json_decode($data, true);
+        } catch (Exception $e) {
+
+        }
         if (!is_array($data) || isset($data['error_code'])) {
             $error     = array_get($data, 'error');
             $errorCode = array_get($data, 'error_code');

@@ -1,10 +1,7 @@
 <?php namespace Lialosiu\SocialiteChina\Two;
 
-use Guzzle\Common\Exception\GuzzleException;
+use Exception;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Stream\GuzzleStreamWrapper;
-use Laravel\Socialite\Two\AbstractProvider;
-use Laravel\Socialite\Two\ProviderInterface;
 use Laravel\Socialite\Two\User;
 use Lialosiu\SocialiteChina\Exception\QqOAuthException;
 
@@ -45,11 +42,12 @@ class QqProvider extends AbstractProvider implements ProviderInterface
                 'query' => $this->getTokenFields($code),
             ]);
         } catch (RequestException $e) {
-            $this->checkError($this->jsonp_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $this->checkError($this->jsonp_decode($response->getBody(), true));
+        $this->decode($response->getBody());
 
         return $this->parseAccessToken($response->getBody());
     }
@@ -70,11 +68,12 @@ class QqProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $this->checkError($this->jsonp_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $data = $this->checkError($this->jsonp_decode($response->getBody(), true));
+        $data = $this->decode($response->getBody());
 
         return $data;
     }
@@ -113,11 +112,12 @@ class QqProvider extends AbstractProvider implements ProviderInterface
                 ],
             ]);
         } catch (RequestException $e) {
-            $this->checkError($this->jsonp_decode($e->getResponse()->getBody(), true));
+            if ($e->hasResponse())
+                $this->decode($e->getResponse()->getBody());
             throw $e;
         }
 
-        $data = $this->checkError($this->jsonp_decode($response->getBody(), true));
+        $data = $this->decode($response->getBody());
 
         $openid = array_get($data, 'openid');
 
@@ -126,8 +126,14 @@ class QqProvider extends AbstractProvider implements ProviderInterface
         return array_get($data, 'openid');
     }
 
-    private function checkError($data)
+    private function decode($data)
     {
+        try {
+            $data = $this->jsonp2json($data);
+            $data = json_decode($data, true);
+        } catch (Exception $e) {
+
+        }
         if (isset($data['error'])) {
             $errorCode = array_get($data, 'error');
             $error     = array_get($data, 'error_description');
@@ -149,12 +155,12 @@ class QqProvider extends AbstractProvider implements ProviderInterface
         return '';
     }
 
-    private function jsonp_decode($jsonp, $assoc = false)
+    private function jsonp2json($jsonp)
     {
         $jsonp = $jsonp->__toString();
         if ($jsonp[0] !== '[' && $jsonp[0] !== '{') {
             $jsonp = substr($jsonp, strpos($jsonp, '('));
         }
-        return json_decode(trim($jsonp, "();\t\n\r\0\x0B"), $assoc);
+        return trim($jsonp, "();\t\n\r\0\x0B");
     }
 }
