@@ -38,7 +38,7 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
      */
     public function getAccessToken($code)
     {
-        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'body' : 'body';
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
 
         try {
             $response = $this->getHttpClient()->post($this->getTokenUrl(), [
