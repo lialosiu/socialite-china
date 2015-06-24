@@ -1,5 +1,6 @@
 <?php namespace Lialosiu\SocialiteChina\Two;
 
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
@@ -37,9 +38,11 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
      */
     public function getAccessToken($code)
     {
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'body' : 'body';
+
         try {
             $response = $this->getHttpClient()->post($this->getTokenUrl(), [
-                'body' => $this->getTokenFields($code),
+                $postKey => $this->getTokenFields($code),
             ]);
         } catch (RequestException $e) {
             $this->checkError(json_decode($e->getResponse()->getBody(), true));
@@ -102,9 +105,11 @@ class WeiboProvider extends AbstractProvider implements ProviderInterface
 
     private function getUid($token)
     {
+        $postKey = (version_compare(ClientInterface::VERSION, '6') === 1) ? 'form_params' : 'body';
+
         try {
             $response = $this->getHttpClient()->post('https://api.weibo.com/oauth2/get_token_info', [
-                'body' => [
+                $postKey => [
                     'access_token' => $token,
                 ],
             ]);
