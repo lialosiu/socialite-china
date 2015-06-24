@@ -13,6 +13,8 @@ composer require "lialosiu/socialite-china:~1.0"
 
 Add provider ```Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class``` in your ```config/app.php```
 
+Add aliases ```'SocializeChina' => Lialosiu\SocialiteChina\Facades\Socialite::class,``` in your ```config/app.php```
+
 Add config in ```config/services.php``` :
 
 ```
