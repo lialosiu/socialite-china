@@ -55,7 +55,11 @@ WEIXIN_CALLBACK_URL=YourWeixinCallBackUrl
 
 ## Documentation
 
-You can pass the token manually like ```SocializeChina::with('weibo')->user('2.00xxxxxxxxxxxxxxxxxxxxxxxxxxxx')```
+You can pass the token manually like
+
+```
+SocializeChina::with('weibo')->user('2.00xxxxxxxxxxxxxxxxxxxxxxxxxxxx')
+```
 
 Other same with the [laravel/socialite](http://laravel.com/docs/5.0/authentication#social-authentication)
 
