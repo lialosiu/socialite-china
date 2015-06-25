@@ -46,6 +46,20 @@ class SocialiteChinaManager extends Manager implements Contracts\Factory
     }
 
     /**
+     * Create an instance of the specified driver.
+     *
+     * @return \Laravel\Socialite\One\AbstractProvider
+     */
+    protected function createWeixinDriver()
+    {
+        $config = $this->app['config']['services.weixin'];
+
+        return $this->buildProvider(
+            'Lialosiu\SocialiteChina\Two\WeixinProvider', $config
+        );
+    }
+
+    /**
      * Build an OAuth 2 provider instance.
      *
      * @param  string $provider

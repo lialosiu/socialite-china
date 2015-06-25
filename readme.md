@@ -8,7 +8,7 @@ Laravel Socialite OAuth authentication for China.
 ## Usage
 
 ```
-composer require "lialosiu/socialite-china:~1.1"
+composer require "lialosiu/socialite-china:~1.2"
 ```
 
 Add provider ```Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class``` in your ```config/app.php```
@@ -29,6 +29,12 @@ Add config in ```config/services.php``` :
     'client_secret' => env('QQ_APP_SECRET', ''),
     'redirect'      => env('QQ_CALLBACK_URL', ''),
 ],
+
+'weixin'       => [
+    'client_id'     => env('WEIXIN_APP_KEY', ''),
+    'client_secret' => env('WEIXIN_APP_SECRET', ''),
+    'redirect'      => env('WEIXIN_CALLBACK_URL', ''),
+],
 ```
 
 Add env in ```.env``` :
@@ -41,6 +47,10 @@ WEIBO_CALLBACK_URL=YourWeiboCallBackUrl
 QQ_APP_KEY=YourQqAppKey
 QQ_APP_SECRET=YourQqAppKey
 QQ_CALLBACK_URL=YourQqCallBackUrl
+
+WEIXIN_APP_KEY=YourWeixinAppKey
+WEIXIN_APP_SECRET=YourWeixinAppKey
+WEIXIN_CALLBACK_URL=YourWeixinCallBackUrl
 ```
 
 ## Documentation
