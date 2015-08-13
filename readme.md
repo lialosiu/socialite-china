@@ -7,17 +7,17 @@ Laravel Socialite OAuth authentication for China.
 
 ## Usage
 
-```
+```sh
 composer require "lialosiu/socialite-china:~1.2"
 ```
 
-Add provider ```Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class``` in your ```config/app.php```
+Add provider `Lialosiu\SocialiteChina\SocialiteChinaServiceProvider::class` in your `config/app.php`
 
-Add aliases ```'SocializeChina' => Lialosiu\SocialiteChina\Facades\Socialite::class,``` in your ```config/app.php```
+Add aliases `'SocializeChina' => Lialosiu\SocialiteChina\Facades\Socialite::class,` in your `config/app.php`
 
-Add config in ```config/services.php``` :
+Add config in `config/services.php` :
 
-```
+```php
 'weibo'    => [
     'client_id'     => env('WEIBO_APP_KEY', ''),
     'client_secret' => env('WEIBO_APP_SECRET', ''),
@@ -39,7 +39,7 @@ Add config in ```config/services.php``` :
 
 Add env in ```.env``` :
 
-```
+```ini
 WEIBO_APP_KEY=YourWeiboAppKey
 WEIBO_APP_SECRET=YourWeiboAppSecret
 WEIBO_CALLBACK_URL=YourWeiboCallBackUrl
@@ -57,7 +57,7 @@ WEIXIN_CALLBACK_URL=YourWeixinCallBackUrl
 
 You can pass the token manually like
 
-```
+```php
 SocializeChina::with('weibo')->user('UserWeiboToken')
 ```
 
